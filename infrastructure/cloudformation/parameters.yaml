@@ -1,0 +1,6 @@
+- ParameterKey: ApplicationName
+  ParameterValue: ${BUILD_REPOSITORY_NAME}
+- ParameterKey: AcmCertificateArn
+  ParameterValue: ${AcmCertificateArn}
+- ParameterKey: StorageBucket
+  ParameterValue: ${StorageBucket}

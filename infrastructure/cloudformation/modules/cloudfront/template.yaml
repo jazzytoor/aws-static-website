@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Static Site Website Template
+Parameters:
+
+  AcmCertificateArn:
+    Description: Amazon resource name for acm
+    Type: String
+
+  ApplicationName:
+    Description: The shorthand name of the app
+    Type: String
+
+  DomainName:
+    Description: The domain name to be created for route 53
+    Type: String
+
+  CloudFrontOriginAccessIdentity:
+    Description: The cloudfront origin access identity
+    Type: String
+
+Resources:
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig: 
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /index.html
+        HttpVersion: http2
+        Comment: !Sub Cloudfront For ${ApplicationName} 
+        Enabled: true
+        Aliases:
+          - !Ref ApplicationName
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          Compress: true
+          AllowedMethods:
+            - GET
+            - HEAD
+          DefaultTTL: 30
+          MinTTL: 0
+          MaxTTL: 30
+          ViewerProtocolPolicy: 'redirect-to-https'
+          TargetOriginId: S3Origin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: all
+        ViewerCertificate:
+          AcmCertificateArn: !Ref AcmCertificateArn
+          SslSupportMethod: sni-only
+        Origins:
+          - DomainName: !Ref DomainName
+            Id: S3Origin
+            S3OriginConfig:
+              OriginAccessIdentity: !Join [ "", [ "origin-access-identity/cloudfront/", !Ref CloudFrontOriginAccessIdentity]]
+
+Outputs:
+  DomainName:
+    Description: Cloudfront Domain Name
+    Value: !GetAtt CloudFrontDistribution.DomainName
