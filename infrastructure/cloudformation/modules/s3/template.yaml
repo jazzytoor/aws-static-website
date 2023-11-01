@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Static Site Website Template
+Parameters:
+  BucketName:
+    Type: String
+    Description: The name for the bucket
+
+  CloudFrontOriginAccessIdentity:
+    Description: The cloudfront origin access identity
+    Type: String
+
+Resources:
+  MainS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      BucketEncryption:
+        ServerSideEncryptionConfiguration: 
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  S3BucketPolicy: 
+    Type: AWS::S3::BucketPolicy
+    Properties: 
+      Bucket: !Ref MainS3Bucket
+      PolicyDocument: 
+        Statement:
+          - Effect: Allow
+            Principal: 
+              CanonicalUser: !Ref CloudFrontOriginAccessIdentity
+            Action: 's3:GetObject'
+            Resource:
+              - !Sub ${MainS3Bucket.Arn}/*
+          - Effect: Deny
+            Principal: '*'
+            Action: '*'
+            Resource:
+              - !GetAtt MainS3Bucket.Arn
+              - !Sub ${MainS3Bucket.Arn}/*
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+Outputs:
+  MainS3Bucket:
+    Value: !Ref MainS3Bucket
+    Description: Name Of The Bucket Where The Static Site Content Sits
+  
+  MainS3BucketDomainName:
+    Value: !GetAtt MainS3Bucket.DomainName
+    Description: The Full Domain Name of The Main S3 bucket

@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Static Site Website Template
+Parameters:
+  BucketName:
+    Type: String
+    Description: The name for the bucket
+
+Resources:
+  RedirectBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub www.${BucketName}
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        RedirectAllRequestsTo: 
+          HostName: !Ref BucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration: 
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  S3BucketPolicy: 
+    Type: AWS::S3::BucketPolicy
+    Properties: 
+      Bucket: !Ref RedirectBucket
+      PolicyDocument: 
+        Statement:
+          - Effect: Deny
+            Principal: '*'
+            Action: '*'
+            Resource:
+              - !Sub ${RedirectBucket.Arn}/*
+          - Effect: Deny
+            Principal: '*'
+            Action: '*'
+            Resource:
+              - !GetAtt RedirectBucket.Arn
+              - !Sub ${RedirectBucket.Arn}/*
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+Outputs:
+  RedirectBucket:
+    Value: !Ref RedirectBucket
+    Description: Name Of The Bucket Where The Static Site Content Sits
+
+  RedirectBucketDomainName:
+    Value: !Sub ${RedirectBucket}.s3-website.${AWS::Region}.amazonaws.com
+    Description: The Full Domain Name of The Redirect S3 bucket
