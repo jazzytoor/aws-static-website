@@ -85,6 +85,14 @@ jobs:
           no-telemetry: true
           root: infrastructure/terraform
 
+      - name: Terraform Init
+        run: terraform init
+        working-directory: infrastructure/terraform
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: infrastructure/terraform
+
       - name: Terraform Apply
         if: |
           github.event_name != 'workflow_dispatch' ||
