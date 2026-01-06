@@ -19,18 +19,18 @@ Resources:
         IndexDocument: index.html
         ErrorDocument: index.html
       BucketEncryption:
-        ServerSideEncryptionConfiguration: 
+        ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
 
-  S3BucketPolicy: 
+  S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
-    Properties: 
+    Properties:
       Bucket: !Ref MainS3Bucket
-      PolicyDocument: 
+      PolicyDocument:
         Statement:
           - Effect: Allow
-            Principal: 
+            Principal:
               CanonicalUser: !Ref CloudFrontOriginAccessIdentity
             Action: 's3:GetObject'
             Resource:
@@ -49,7 +49,7 @@ Outputs:
   MainS3Bucket:
     Value: !Ref MainS3Bucket
     Description: Name Of The Bucket Where The Static Site Content Sits
-  
+
   MainS3BucketDomainName:
     Value: !GetAtt MainS3Bucket.DomainName
     Description: The Full Domain Name of The Main S3 bucket

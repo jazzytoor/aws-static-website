@@ -12,18 +12,18 @@ Resources:
       BucketName: !Sub www.${BucketName}
       AccessControl: PublicRead
       WebsiteConfiguration:
-        RedirectAllRequestsTo: 
+        RedirectAllRequestsTo:
           HostName: !Ref BucketName
       BucketEncryption:
-        ServerSideEncryptionConfiguration: 
+        ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
 
-  S3BucketPolicy: 
+  S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
-    Properties: 
+    Properties:
       Bucket: !Ref RedirectBucket
-      PolicyDocument: 
+      PolicyDocument:
         Statement:
           - Effect: Deny
             Principal: '*'

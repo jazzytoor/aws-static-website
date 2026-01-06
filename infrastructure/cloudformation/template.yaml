@@ -23,7 +23,7 @@ Resources:
   MainS3Bucket:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${StorageBucket}.s3.amazonaws.com/modules/s3/template.yaml 
+      TemplateURL: !Sub https://${StorageBucket}.s3.amazonaws.com/modules/s3/template.yaml
       TimeoutInMinutes: 60
       Parameters:
         BucketName: !Ref ApplicationName
@@ -32,7 +32,7 @@ Resources:
   RedirectS3Bucket:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${StorageBucket}.s3.amazonaws.com/modules/s3/redirect-template.yaml 
+      TemplateURL: !Sub https://${StorageBucket}.s3.amazonaws.com/modules/s3/redirect-template.yaml
       TimeoutInMinutes: 60
       Parameters:
         BucketName: !Ref ApplicationName
@@ -40,7 +40,7 @@ Resources:
   CloudfrontDistribution:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${StorageBucket}.s3.amazonaws.com/modules/cloudfront/template.yaml 
+      TemplateURL: !Sub https://${StorageBucket}.s3.amazonaws.com/modules/cloudfront/template.yaml
       TimeoutInMinutes: 60
       Parameters:
         AcmCertificateArn: !Ref AcmCertificateArn

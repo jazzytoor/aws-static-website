@@ -22,11 +22,17 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v6
 
-      - name: Publish Artifact Live
+      - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
           name: infrastructure
           path: infrastructure
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: index.html
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,6 +49,12 @@ jobs:
         with:
           name: infrastructure
           path: infrastructure
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: app
+          path: app
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.1.1
@@ -84,6 +96,14 @@ jobs:
           log-level: debug
           no-telemetry: true
           root: infrastructure/terraform
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: infrastructure/terraform
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: infrastructure/terraform
 
       - name: Terraform Apply
         if: |
