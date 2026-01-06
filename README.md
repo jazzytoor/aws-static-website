@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to AWS Static Website</h1>
+# >Welcome to AWS Static Website
 
 ## ✨ Overview
 
