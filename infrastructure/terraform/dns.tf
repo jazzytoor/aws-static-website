@@ -2,6 +2,10 @@ module "acm" {
   source  = "terraform-aws-modules/acm/aws"
   version = "~> 6.0"
 
+  providers = {
+    aws = aws.us_east_1
+  }
+
   validation_method = "DNS"
 
   domain_name               = var.domain

@@ -23,13 +23,13 @@ Resources:
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
-      DistributionConfig: 
+      DistributionConfig:
         CustomErrorResponses:
           - ErrorCode: 404
             ResponseCode: 404
             ResponsePagePath: /index.html
         HttpVersion: http2
-        Comment: !Sub Cloudfront For ${ApplicationName} 
+        Comment: !Sub Cloudfront For ${ApplicationName}
         Enabled: true
         Aliases:
           - !Ref ApplicationName

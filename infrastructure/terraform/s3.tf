@@ -37,7 +37,7 @@ module "object" {
   content_type = "text/html"
 
   # file_source = "../../index.html"
-  content_base64 = filebase64("../../index.html")
+  content_base64 = filebase64("../../app/index.html")
 
   tags = local.default_tags
 }
