@@ -1,4 +1,4 @@
-# >Welcome to AWS Static Website
+# Welcome to AWS Static Website
 
 ## ✨ Overview
 
