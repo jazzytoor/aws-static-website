@@ -11,7 +11,3 @@ This repository demostrates how to create static website
 ## Usage
 
 - 🚀 Infrastructure provided in CloudFormation & Terraform
-
-## Author
-
-👤 **Jazz**
